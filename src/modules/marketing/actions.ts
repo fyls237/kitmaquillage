@@ -41,7 +41,7 @@ function checkRateLimit(ip: string): boolean {
 // ── Server Action ─────────────────────────────────
 
 export async function subscribeToWaitlist(
-  prevState: WaitlistFormState,
+  _prevState: WaitlistFormState,
   formData: FormData
 ): Promise<WaitlistFormState> {
   // Rate limiting
