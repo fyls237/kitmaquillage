@@ -1,26 +1,135 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ──────────────────────────────────────────────────
+   DESIGN SYSTEM — Mon Premier Kit
+   Palette : 70% noir / 20% blanc / 10% rose-fuchsia
+   Angles droits partout, filets 1px, zéro ombres
+   ────────────────────────────────────────────────── */
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Couleurs de marque */
+  --color-noir: #0D0D0D;
+  --color-blanc: #FAF7F8;
+  --color-rose-poudre: #F8D8E6;
+  --color-fuchsia: #FF4FA3;
+  --color-or: #A98445;
+  --color-filet-sombre: rgba(250, 247, 248, 0.14);
+  --color-filet-clair: #E5E0E2;
+
+  /* Polices (injectées via next/font CSS variables)
+     Les variables --font-display/--font-body/--font-accent sont déjà définies via les classes next/font sur <html>. */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ── Reset global ─────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  border-radius: 0 !important;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-noir);
+  color: var(--color-blanc);
+  font-family: var(--font-body), "Montserrat", sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Typographie ──────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display), "Bodoni Moda", "Playfair Display", serif;
+  font-weight: 300;
+  line-height: 0.95;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+/* ── Focus visible — Accessibilité ────────────── */
+
+:focus-visible {
+  outline: 2px solid var(--color-fuchsia);
+  outline-offset: 2px;
+}
+
+/* ── Animations réduites ──────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Utilitaires éditoriaux ───────────────────── */
+
+.eyebrow {
+  font-family: var(--font-body), "Montserrat", sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+}
+
+.label-nav {
+  font-family: var(--font-body), "Montserrat", sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+.accent-script {
+  font-family: var(--font-accent), "Italianno", cursive;
+  font-weight: 400;
+  font-style: normal;
+  text-transform: none;
+  letter-spacing: normal;
+  line-height: 1;
+}
+
+/* ── Filets éditoriaux ────────────────────────── */
+
+.filet-sombre {
+  border-color: var(--color-filet-sombre);
+}
+
+.filet-clair {
+  border-color: var(--color-filet-clair);
+}
+
+/* ── Scrollbar minimale ───────────────────────── */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-noir);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(250, 247, 248, 0.2);
+}
+
+/* ── Animations ───────────────────────────────── */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
