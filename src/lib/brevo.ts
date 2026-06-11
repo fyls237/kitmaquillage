@@ -30,8 +30,11 @@ export async function addContactToWaitlist(
     return { success: true };
   }
 
-  const listIdNum = parseInt(listId, 10);
-
+  const listIdNum = Number.parseInt(listId, 10);
+  if (!Number.isFinite(listIdNum)) {
+    console.warn("[Brevo] WAITLIST_LIST_ID is not a valid number — skipping contact creation");
+    return { success: true };
+  }
   try {
     // Étape 1 : Créer ou mettre à jour le contact (Simple Opt-in)
     const response = await fetch(`${BREVO_API_URL}/contacts`, {
