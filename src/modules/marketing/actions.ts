@@ -100,10 +100,7 @@ export async function subscribeToWaitlist(
     };
   } catch (error) {
     // Gérer le cas d'un e-mail déjà inscrit (race condition)
-    if (
-      error instanceof Error &&
-      error.message.includes("Unique constraint")
-    ) {
+    if ((error as any)?.code === "P2002") {
       return {
         success: true,
         message: "Tu fais déjà partie du mouvement !",
