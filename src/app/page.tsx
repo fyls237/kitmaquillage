@@ -13,8 +13,8 @@ export default function HomePage() {
   return (
     <>
       {/* ── Bandeau annonce ────────────────────────── */}
-      <AnnouncementBar 
-        message="Série limitée — Rejoins la liste d'attente" 
+      <AnnouncementBar
+        message="Série limitée — Rejoins la liste d'attente"
         targetDate={launchDate}
       />
 
@@ -58,30 +58,23 @@ export default function HomePage() {
             accentPosition="above"
             highlightDot={true}
             as="h1"
+            size="medium"
           >
-            COMMENCE ICI.
+            Apprendre à se maquiller pour de vrai
           </DisplayTitle>
 
           {/* Sous-titre */}
           <p className="text-blanc/70 text-base leading-relaxed mt-6 mb-8 max-w-lg m-0">
-            Le premier kit maquillage cl&eacute; en main pour d&eacute;butantes.
-            6&nbsp;essentiels cur&eacute;s par une experte, tutoriels exclusifs
-            inclus.
+            10 produits s&eacute;lectionn&eacute;s, un guide pas &agrave; pas et des tutoriels exclusifs tourn&eacute;s avec exactement les produits du kit.
           </p>
 
           {/* Formulaire waitlist */}
           <WaitlistForm />
 
-          {/* Compteur d'inscrites */}
-          <Suspense
-            fallback={
-              <p className="eyebrow text-blanc/40 mt-8 m-0">
-                Chargement...
-              </p>
-            }
-          >
-            <SubscriberCount />
-          </Suspense>
+          {/* Message de promotion */}
+          <p className="eyebrow text-blanc/60 mt-8 m-0 text-center">
+            <span className="text-fuchsia font-medium">-15% </span> pour les 50 premi&egrave;res personnes
+          </p>
         </div>
       </section>
     </>
