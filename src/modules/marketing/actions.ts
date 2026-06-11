@@ -23,6 +23,12 @@ const RATE_LIMIT_MAX = 5; // 5 requêtes par minute par IP
 
 function checkRateLimit(ip: string): boolean {
   const now = Date.now();
+  for (const [key, value] of rateLimitMap.entries()) {
+    if (now > value.resetAt) {
+      rateLimitMap.delete(key);
+    }
+  }
+
   const entry = rateLimitMap.get(ip);
 
   if (!entry || now > entry.resetAt) {
