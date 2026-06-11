@@ -51,7 +51,7 @@ export async function subscribeToWaitlist(
     headersList.get("x-real-ip") ||
     "unknown";
 
-  if (!checkRateLimit(ip)) {
+  if (ip !== "unknown" && !checkRateLimit(ip)) {
     return {
       success: false,
       message: "Trop de tentatives. Réessaie dans une minute.",
