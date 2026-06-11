@@ -23,6 +23,12 @@ const RATE_LIMIT_MAX = 5; // 5 requêtes par minute par IP
 
 function checkRateLimit(ip: string): boolean {
   const now = Date.now();
+  for (const [key, value] of rateLimitMap.entries()) {
+    if (now > value.resetAt) {
+      rateLimitMap.delete(key);
+    }
+  }
+
   const entry = rateLimitMap.get(ip);
 
   if (!entry || now > entry.resetAt) {
@@ -41,7 +47,7 @@ function checkRateLimit(ip: string): boolean {
 // ── Server Action ─────────────────────────────────
 
 export async function subscribeToWaitlist(
-  prevState: WaitlistFormState,
+  _prevState: WaitlistFormState,
   formData: FormData
 ): Promise<WaitlistFormState> {
   // Rate limiting
@@ -51,7 +57,7 @@ export async function subscribeToWaitlist(
     headersList.get("x-real-ip") ||
     "unknown";
 
-  if (!checkRateLimit(ip)) {
+  if (ip !== "unknown" && !checkRateLimit(ip)) {
     return {
       success: false,
       message: "Trop de tentatives. Réessaie dans une minute.",
@@ -100,10 +106,7 @@ export async function subscribeToWaitlist(
     };
   } catch (error) {
     // Gérer le cas d'un e-mail déjà inscrit (race condition)
-    if (
-      error instanceof Error &&
-      error.message.includes("Unique constraint")
-    ) {
+    if ((error as any)?.code === "P2002") {
       return {
         success: true,
         message: "Tu fais déjà partie du mouvement !",
