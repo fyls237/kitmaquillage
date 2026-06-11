@@ -12,7 +12,7 @@ interface BrevoResponse {
 }
 
 /**
- * Ajoute un contact à la liste d'attente Brevo avec double opt-in.
+ * Ajoute un contact à la liste d'attente Brevo (simple opt-in via création/mise à jour du contact).
  * Si les clés API ne sont pas configurées, retourne un succès silencieux
  * (mode dégradé pour le développement local).
  */
