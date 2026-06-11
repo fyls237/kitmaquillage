@@ -16,10 +16,8 @@
   --color-filet-sombre: rgba(250, 247, 248, 0.14);
   --color-filet-clair: #E5E0E2;
 
-  /* Polices (injectées via next/font CSS variables) */
-  --font-display: var(--font-display);
-  --font-body: var(--font-body);
-  --font-accent: var(--font-accent);
+  /* Polices (injectées via next/font CSS variables)
+     Les variables --font-display/--font-body/--font-accent sont déjà définies via les classes next/font sur <html>. */
 }
 
 /* ── Reset global ─────────────────────────────── */
