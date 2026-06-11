@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react";
 
-const SHARE_URL = "https://monpremierkit.fr";
+const SHARE_URL = "https://kitmaquillage.vercel.app";
 const SHARE_TEXT =
   "Je viens de rejoindre la liste d'attente Mon Premier Kit 💄 Rejoins le mouvement ! #MonPremierKit";
 

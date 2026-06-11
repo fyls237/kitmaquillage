@@ -47,8 +47,8 @@ export async function addContactToWaitlist(
       body: JSON.stringify({
         email,
         includeListIds: [listIdNum],
-        templateId: 1, // Template de confirmation double opt-in configuré dans Brevo
-        redirectionUrl: `${process.env.NEXT_PUBLIC_SITE_URL || "https://monpremierkit.fr"}/merci`,
+        templateId: 2, // Template de confirmation double opt-in configuré dans Brevo
+        redirectionUrl: `${process.env.NEXT_PUBLIC_SITE_URL || "https://kitmaquillage.vercel.app"}/merci`,
         attributes: {
           SOURCE: "waitlist",
           SIGNUP_DATE: new Date().toISOString(),
