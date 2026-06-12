@@ -1,6 +1,6 @@
 /**
  * Brevo (ex-Sendinblue) — Intégration API v3
- * Gère l'ajout de contacts en double opt-in pour la liste d'attente.
+ * Gère l'ajout de contacts en simple opt-in pour la liste d'attente.
  */
 
 const BREVO_API_URL = "https://api.brevo.com/v3";
@@ -36,8 +36,8 @@ export async function addContactToWaitlist(
     return { success: true };
   }
   try {
-    // Étape 1 : Créer ou mettre à jour le contact avec double opt-in
-    const response = await fetch(`${BREVO_API_URL}/contacts/doubleOptinConfirmation`, {
+    // Étape 1 : Créer ou mettre à jour le contact (Simple Opt-in)
+    const response = await fetch(`${BREVO_API_URL}/contacts`, {
       method: "POST",
       headers: {
         "accept": "application/json",
@@ -46,9 +46,8 @@ export async function addContactToWaitlist(
       },
       body: JSON.stringify({
         email,
-        includeListIds: [listIdNum],
-        templateId: 2, // Template de confirmation double opt-in configuré dans Brevo
-        redirectionUrl: `${process.env.NEXT_PUBLIC_SITE_URL || "https://kitmaquillage.vercel.app"}/merci`,
+        listIds: [listIdNum],
+        updateEnabled: true, // Si le contact existe déjà, le mettre à jour sans erreur
         attributes: {
           SOURCE: "waitlist",
           SIGNUP_DATE: new Date().toISOString(),
