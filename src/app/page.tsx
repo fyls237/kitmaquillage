@@ -6,9 +6,9 @@ import { WaitlistForm } from "@/modules/marketing/components/WaitlistForm";
 import { SubscriberCount } from "@/modules/marketing/components/SubscriberCount";
 
 export default function HomePage() {
-  // Date de lancement (ex: dans 14 jours)
+  // Date de lancement (ex: dans 15 jours)
   const launchDate = new Date();
-  launchDate.setDate(launchDate.getDate() + 14);
+  launchDate.setDate(launchDate.getDate() + 15);
 
   return (
     <>
