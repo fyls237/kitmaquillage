@@ -37,6 +37,7 @@ export function ShadeCard({ shade, isSelected, onSelect, type }: ShadeCardProps)
       role="radio"
       aria-checked={isSelected}
       aria-label={`${type === "fond" ? "Fond de teint" : "Anti-cernes"} — ${shade.nom} — ${shade.sousTon}`}
+    >
       {/* Swatch de couleur */}
       <div
         className="w-14 h-14 flex-shrink-0 relative"
