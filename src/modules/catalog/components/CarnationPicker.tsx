@@ -71,29 +71,3 @@ export function CarnationPicker({ carnations, selected, onSelect }: CarnationPic
   );
 }
 
-/**
- * Placeholder SVG pour les photos de carnation.
- * À remplacer par de vraies photos de peau.
- */
-function CarnationPlaceholder({ id }: { id: string }) {
-  const colors: Record<string, { bg: string; skin: string }> = {
-    claire: { bg: "#2a1f1f", skin: "#F5D6C3" },
-    medium: { bg: "#2a1f1f", skin: "#D4A574" },
-    tan: { bg: "#2a1f1f", skin: "#A67C52" },
-    profonde: { bg: "#2a1f1f", skin: "#5C3A21" },
-  };
-
-  const c = colors[id] ?? colors.medium;
-
-  return (
-    <svg viewBox="0 0 200 200" className="w-full h-full" aria-hidden="true">
-      <rect width="200" height="200" fill={c.bg} />
-      <circle cx="100" cy="85" r="50" fill={c.skin} />
-      <ellipse cx="100" cy="160" rx="55" ry="40" fill={c.skin} />
-      {/* Simple face indicators */}
-      <circle cx="85" cy="78" r="3" fill={c.bg} opacity="0.6" />
-      <circle cx="115" cy="78" r="3" fill={c.bg} opacity="0.6" />
-      <ellipse cx="100" cy="95" rx="8" ry="3" fill={c.bg} opacity="0.15" />
-    </svg>
-  );
-}
