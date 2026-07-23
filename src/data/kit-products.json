@@ -1,0 +1,82 @@
+{
+  "kit": {
+    "nom": "TON GLOW — Le Kit Complet",
+    "prix": 99.99,
+    "devise": "EUR",
+    "description": "10 produits sélectionnés pour un glow complet, du teint au finishing.",
+    "produits": [
+      {
+        "id": "01",
+        "nom": "Base Power Grip",
+        "marque": "ELF",
+        "description": "Base qui prépare la peau et fait tenir le maquillage toute la journée.",
+        "image": "/images/produits/01-base-elf.webp"
+      },
+      {
+        "id": "02",
+        "nom": "Fond de teint Soft Glam",
+        "marque": "ELF",
+        "description": "Couvrance modulable, fini naturel et lumineux. Choisis ta teinte selon ta carnation.",
+        "image": "/images/produits/02-fond-de-teint-elf.webp",
+        "teintable": true
+      },
+      {
+        "id": "03",
+        "nom": "Anti-cernes",
+        "marque": "Essence",
+        "description": "Correcteur léger qui camoufle les cernes sans marquer les plis.",
+        "image": "/images/produits/03-anti-cernes-essence.webp",
+        "teintable": true
+      },
+      {
+        "id": "04",
+        "nom": "Bronzer crème",
+        "marque": "Essence",
+        "description": "Donne un effet bonne mine naturel, se fond facilement à la peau.",
+        "image": "/images/produits/04-bronzer-creme-essence.webp"
+      },
+      {
+        "id": "05",
+        "nom": "Poudre translucide",
+        "marque": "Essence",
+        "description": "Fixe le maquillage sans ajouter de couleur, fini mat et invisible.",
+        "image": "/images/produits/05-poudre-translucide-essence.webp"
+      },
+      {
+        "id": "06",
+        "nom": "Bronzer poudre",
+        "marque": "Essence",
+        "description": "Sculpte et réchauffe le visage avec un fini satiné.",
+        "image": "/images/produits/06-bronzer-poudre-essence.webp"
+      },
+      {
+        "id": "07",
+        "nom": "Poudre compacte",
+        "marque": "Essence",
+        "description": "Unifie le teint et matifie pour un fini longue tenue.",
+        "image": "/images/produits/07-poudre-compacte-essence.webp"
+      },
+      {
+        "id": "08",
+        "nom": "Blush",
+        "marque": "Essence",
+        "description": "Ajoute une touche de couleur naturelle aux pommettes.",
+        "image": "/images/produits/08-blush-essence.webp"
+      },
+      {
+        "id": "09",
+        "nom": "Highlighter",
+        "marque": "Revolution",
+        "description": "Illumine les points hauts du visage pour un glow irrésistible.",
+        "image": "/images/produits/09-highlighter-revolution.webp"
+      },
+      {
+        "id": "10",
+        "nom": "Fixateur",
+        "marque": "Essence",
+        "description": "Spray fixant qui garde ton maquillage en place toute la journée.",
+        "image": "/images/produits/10-fixateur-essence.webp"
+      }
+    ]
+  }
+}

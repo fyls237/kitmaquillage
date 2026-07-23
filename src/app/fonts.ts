@@ -1,12 +1,12 @@
-import { Bodoni_Moda, Montserrat, Italianno } from "next/font/google";
+import { Playfair_Display, Montserrat, Italianno } from "next/font/google";
 
 /**
- * Titres display — Bodoni Moda
- * Graisse 300-400, tailles géantes (clamp 40-96px), style éditorial magazine
+ * Titres display — Playfair Display
+ * Serif élégante, style maison de beauté premium
  */
-export const bodoniModa = Bodoni_Moda({
+export const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
-  weight: ["400"],
+  weight: ["400", "700"],
   style: ["normal", "italic"],
   display: "swap",
   variable: "--font-display",
@@ -14,11 +14,11 @@ export const bodoniModa = Bodoni_Moda({
 
 /**
  * Corps de texte, boutons, navigation — Montserrat
- * Graisse 400 (corps) et 500 (boutons/étiquettes)
+ * Graisse 400 (corps), 500 (boutons/étiquettes), 600-700 (titres)
  */
 export const montserrat = Montserrat({
   subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
   variable: "--font-body",
 });

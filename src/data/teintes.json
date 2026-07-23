@@ -1,0 +1,156 @@
+{
+  "carnations": [
+    {
+      "id": "claire",
+      "label": "Claire",
+      "description": "Peau très claire à claire, sous-tons rosés ou neutres",
+      "image": "/images/carnations/claire.png"
+    },
+    {
+      "id": "medium",
+      "label": "Médium",
+      "description": "Peau claire à moyenne, sous-tons chauds ou neutres",
+      "image": "/images/carnations/medium.png"
+    },
+    {
+      "id": "tan",
+      "label": "Tan",
+      "description": "Peau moyenne à mate, sous-tons dorés ou olive",
+      "image": "/images/carnations/tan.png"
+    },
+    {
+      "id": "profonde",
+      "label": "Profonde",
+      "description": "Peau foncée à très foncée, sous-tons chauds ou neutres",
+      "image": "/images/carnations/profonde.png"
+    }
+  ],
+  "teintes": {
+    "fond": [
+      {
+        "id": "F1",
+        "nom": "Fair Rose",
+        "sousTon": "Sous-ton rosé, pour les peaux très claires",
+        "image": "/images/teintes/fond-f1.webp"
+      },
+      {
+        "id": "F2",
+        "nom": "Light Ivory",
+        "sousTon": "Sous-ton neutre, pour les peaux claires",
+        "image": "/images/teintes/fond-f2.webp"
+      },
+      {
+        "id": "F3",
+        "nom": "Natural Beige",
+        "sousTon": "Sous-ton chaud, pour les peaux claires à moyennes",
+        "image": "/images/teintes/fond-f3.webp"
+      },
+      {
+        "id": "F4",
+        "nom": "Medium Sand",
+        "sousTon": "Sous-ton doré, pour les peaux moyennes",
+        "image": "/images/teintes/fond-f4.webp"
+      },
+      {
+        "id": "F5",
+        "nom": "Tan Caramel",
+        "sousTon": "Sous-ton chaud, pour les peaux mates",
+        "image": "/images/teintes/fond-f5.webp"
+      },
+      {
+        "id": "F6",
+        "nom": "Deep Mocha",
+        "sousTon": "Sous-ton neutre chaud, pour les peaux foncées",
+        "image": "/images/teintes/fond-f6.webp"
+      },
+      {
+        "id": "F7",
+        "nom": "Rich Espresso",
+        "sousTon": "Sous-ton chaud, pour les peaux très foncées",
+        "image": "/images/teintes/fond-f7.webp"
+      }
+    ],
+    "cernes": [
+      {
+        "id": "AC1",
+        "nom": "Fair Peach",
+        "sousTon": "Correcteur pêche clair pour peaux claires",
+        "image": "/images/teintes/cernes-ac1.webp"
+      },
+      {
+        "id": "AC2",
+        "nom": "Light Nude",
+        "sousTon": "Correcteur nude pour peaux claires à moyennes",
+        "image": "/images/teintes/cernes-ac2.webp"
+      },
+      {
+        "id": "AC3",
+        "nom": "Medium Warm",
+        "sousTon": "Correcteur chaud pour peaux moyennes",
+        "image": "/images/teintes/cernes-ac3.webp"
+      },
+      {
+        "id": "AC4",
+        "nom": "Tan Golden",
+        "sousTon": "Correcteur doré pour peaux mates",
+        "image": "/images/teintes/cernes-ac4.webp"
+      },
+      {
+        "id": "AC5",
+        "nom": "Deep Caramel",
+        "sousTon": "Correcteur caramel pour peaux foncées",
+        "image": "/images/teintes/cernes-ac5.webp"
+      },
+      {
+        "id": "AC6",
+        "nom": "Rich Mahogany",
+        "sousTon": "Correcteur acajou pour peaux très foncées",
+        "image": "/images/teintes/cernes-ac6.webp"
+      }
+    ]
+  },
+  "correspondances": {
+    "claire": {
+      "fond": [
+        "F1",
+        "F2"
+      ],
+      "cernes": [
+        "AC1",
+        "AC2"
+      ]
+    },
+    "medium": {
+      "fond": [
+        "F2",
+        "F3",
+        "F4"
+      ],
+      "cernes": [
+        "AC2",
+        "AC3"
+      ]
+    },
+    "tan": {
+      "fond": [
+        "F4",
+        "F5"
+      ],
+      "cernes": [
+        "AC3",
+        "AC4"
+      ]
+    },
+    "profonde": {
+      "fond": [
+        "F5",
+        "F6",
+        "F7"
+      ],
+      "cernes": [
+        "AC5",
+        "AC6"
+      ]
+    }
+  }
+}

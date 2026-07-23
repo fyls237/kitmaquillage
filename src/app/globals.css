@@ -1,20 +1,38 @@
 @import "tailwindcss";
 
 /* ──────────────────────────────────────────────────
-   DESIGN SYSTEM — Mon Premier Kit
-   Palette : 70% noir / 20% blanc / 10% rose-fuchsia
-   Angles droits partout, filets 1px, zéro ombres
+   DESIGN SYSTEM — TON GLOW
+   Palette : 70% noir / 20% blanc / 10% rose (#FF2E86)
+   Coins arrondis, ombre glow, sobre et premium
    ────────────────────────────────────────────────── */
 
 @theme inline {
-  /* Couleurs de marque */
-  --color-noir: #0D0D0D;
-  --color-blanc: #FAF7F8;
-  --color-rose-poudre: #F8D8E6;
-  --color-fuchsia: #FF4FA3;
-  --color-or: #A98445;
-  --color-filet-sombre: rgba(250, 247, 248, 0.14);
-  --color-filet-clair: #E5E0E2;
+  /* Fonds */
+  --color-bg: #000000;
+  --color-surface: #111111;
+  --color-border: #2B2B2B;
+
+  /* Texte */
+  --color-text: #FFFFFF;
+  --color-text-muted: #888888;
+  --color-text-secondary: #AAAAAA;
+
+  /* Accent */
+  --color-accent: #FF2E86;
+  --color-accent-hover: #FF4D96;
+
+  /* Statuts */
+  --color-success: #2ECC71;
+  --color-error: #FF4444;
+  --color-warning: #F5A623;
+
+  /* Rayons */
+  --radius-card: 12px;
+  --radius-button: 6px;
+  --radius-input: 6px;
+
+  /* Ombre */
+  --shadow-glow: 0 4px 20px rgba(255, 46, 134, 0.15);
 
   /* Polices (injectées via next/font CSS variables)
      Les variables --font-display/--font-body/--font-accent sont déjà définies via les classes next/font sur <html>. */
@@ -22,18 +40,12 @@
 
 /* ── Reset global ─────────────────────────────── */
 
-*,
-*::before,
-*::after {
-  border-radius: 0 !important;
-}
-
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--color-noir);
-  color: var(--color-blanc);
-  font-family: var(--font-body), "Montserrat", sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body), "Montserrat", "DM Sans", sans-serif;
   font-size: 16px;
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
@@ -43,17 +55,41 @@ body {
 /* ── Typographie ──────────────────────────────── */
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-display), "Bodoni Moda", "Playfair Display", serif;
-  font-weight: 300;
-  line-height: 0.95;
+  font-family: var(--font-display), "Playfair Display", "Cormorant", serif;
+  line-height: 1.2;
   letter-spacing: 0.02em;
-  text-transform: uppercase;
+}
+
+h1 {
+  font-size: clamp(32px, 6vw, 40px);
+  font-weight: 700;
+}
+
+h2 {
+  font-size: clamp(24px, 4vw, 28px);
+  font-weight: 700;
+}
+
+h3 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+p {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+small {
+  font-size: 14px;
+  font-weight: 400;
 }
 
 /* ── Focus visible — Accessibilité ────────────── */
 
 :focus-visible {
-  outline: 2px solid var(--color-fuchsia);
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
 
@@ -97,16 +133,6 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1;
 }
 
-/* ── Filets éditoriaux ────────────────────────── */
-
-.filet-sombre {
-  border-color: var(--color-filet-sombre);
-}
-
-.filet-clair {
-  border-color: var(--color-filet-clair);
-}
-
 /* ── Scrollbar minimale ───────────────────────── */
 
 ::-webkit-scrollbar {
@@ -114,11 +140,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-noir);
+  background: var(--color-bg);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(250, 247, 248, 0.2);
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
 }
 
 /* ── Animations ───────────────────────────────── */
@@ -132,4 +159,9 @@ h1, h2, h3, h4, h5, h6 {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
