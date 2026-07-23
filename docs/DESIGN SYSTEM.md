@@ -33,13 +33,12 @@
   --color-accent-hover:  #FF4D96;   /* rose au survol */
 
   /* Ombre */
-  --shadow-glow: 0 10px 40px rgba(255, 46, 134, 0.20);
+  --shadow-glow: 0 4px 20px rgba(255, 46, 134, 0.15);
 
   /* Rayons */
-  --radius-card:   20px;
-  --radius-button: 12px;
-  --radius-input:  12px;
-}
+  --radius-card:   12px;
+  --radius-button: 6px;
+  --radius-input:  6px;
 ```
 
 ---
