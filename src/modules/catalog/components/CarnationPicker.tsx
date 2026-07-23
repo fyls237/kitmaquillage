@@ -40,7 +40,11 @@ export function CarnationPicker({ carnations, selected, onSelect }: CarnationPic
               className="w-full aspect-square overflow-hidden relative"
               style={{ borderRadius: "var(--radius-card)" }}
             >
-              <CarnationPlaceholder id={carnation.id} />
+              <img
+                src={carnation.image}
+                alt={carnation.label}
+                className="w-full h-full object-cover"
+              />
             </div>
 
             {/* Label */}
