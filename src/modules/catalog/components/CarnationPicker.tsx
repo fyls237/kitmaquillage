@@ -1,7 +1,7 @@
 import type { CarnationId } from "./SkinToneSelector";
 
 interface Carnation {
-  id: string;
+  id: CarnationId;
   label: string;
   description: string;
   image: string;
@@ -22,7 +22,7 @@ export function CarnationPicker({ carnations, selected, onSelect }: CarnationPic
         return (
           <button
             key={carnation.id}
-            onClick={() => onSelect(carnation.id as CarnationId)}
+            onClick={() => onSelect(carnation.id)}
             className={`
               relative flex flex-col items-center gap-3 p-4
               bg-surface border-2 cursor-pointer
