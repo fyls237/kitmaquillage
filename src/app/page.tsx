@@ -1,11 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { TrustBar } from "@/components/ui/TrustBar";
-import kitData from "@/data/kit-products.json";
 
 export default function HomePage() {
-  const { kit } = kitData;
-
   return (
     <>
       {/* ── Hero section plein écran ───────────────── */}
