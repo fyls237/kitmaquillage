@@ -36,8 +36,7 @@ export function ShadeCard({ shade, isSelected, onSelect, type }: ShadeCardProps)
       style={{ borderRadius: "var(--radius-card)" }}
       role="radio"
       aria-checked={isSelected}
-      aria-label={`${shade.nom} — ${shade.sousTon}`}
-    >
+      aria-label={`${type === "fond" ? "Fond de teint" : "Anti-cernes"} — ${shade.nom} — ${shade.sousTon}`}
       {/* Swatch de couleur */}
       <div
         className="w-14 h-14 flex-shrink-0 relative"
