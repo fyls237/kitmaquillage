@@ -195,19 +195,6 @@ export default function KitPage() {
   );
 }
 
-// ── Composants locaux ──────────────────────────────────────────
-
-function BenefitCard({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
-  return (
-    <div className="flex flex-col items-center text-center p-6 rounded-3xl bg-surface border border-border transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:border-accent/30 group">
-      <div className="w-16 h-16 rounded-full bg-bg border border-border flex items-center justify-center text-accent mb-6 group-hover:scale-110 transition-transform duration-300">
-        {icon}
-      </div>
-      <h3 className="text-text font-bold text-xl mb-3">{title}</h3>
-      <p className="text-text-muted text-base leading-relaxed m-0">{description}</p>
-    </div>
-  );
-}
 
 
 function ReviewCard({ name, text }: { name: string; text: string }) {
