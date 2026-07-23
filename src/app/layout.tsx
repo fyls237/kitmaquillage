@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
-import { bodoniModa, montserrat, italianno } from "./fonts";
-import { CookieBanner } from "@/components/ui/CookieBanner";
-import { ConsentAwarePixels } from "@/components/analytics/ConsentAwarePixels";
+import { playfairDisplay, montserrat, italianno } from "./fonts";
+import { Header } from "@/components/ui/Header";
+import { Footer } from "@/components/ui/Footer";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Mon Premier Kit — Ton glow commence ici",
+  title: "TON GLOW — Le kit qui t'apprend à te maquiller",
   description:
-    "Rejoins la liste d'attente pour découvrir le premier kit maquillage clé en main pour débutantes. 6 essentiels curés par une experte, tutoriels exclusifs inclus.",
+    "10 produits sélectionnés, un guide pas à pas et des tutoriels exclusifs. Choisis ta teinte et commande ton kit personnalisé à 99,99 €.",
   openGraph: {
-    title: "Mon Premier Kit — Ton glow commence ici",
+    title: "TON GLOW — Le kit qui t'apprend à te maquiller",
     description:
-      "Le premier kit maquillage clé en main pour débutantes. Rejoins la liste d'attente.",
+      "10 produits sélectionnés pour un glow complet. Choisis ta teinte et commande ton kit personnalisé.",
     type: "website",
     locale: "fr_FR",
   },
@@ -25,12 +25,12 @@ export default function RootLayout({
   return (
     <html
       lang="fr"
-      className={`${bodoniModa.variable} ${montserrat.variable} ${italianno.variable}`}
+      className={`${playfairDisplay.variable} ${montserrat.variable} ${italianno.variable}`}
     >
       <body className="min-h-dvh flex flex-col">
-        {children}
-        <CookieBanner />
-        <ConsentAwarePixels />
+        <Header />
+        <main className="flex-1 pt-16">{children}</main>
+        <Footer />
       </body>
     </html>
   );
