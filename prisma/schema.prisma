@@ -14,3 +14,30 @@ model WaitlistEntry {
   optInAt   DateTime @default(now())
   createdAt DateTime @default(now())
 }
+
+model Order {
+  id           String   @id @default(cuid())
+  orderNumber  String   @unique              // Format "TG-XXXX" lisible
+  status       String   @default("NOUVELLE") // NOUVELLE | CONTACTEE | RDV_FIXE | REMISE | ANNULEE
+
+  // Client
+  firstName    String
+  lastName     String
+  email        String
+  phone        String
+  city         String
+  postalCode   String?
+  message      String?                       // "Un message pour Yvana ?"
+
+  // Teintes choisies
+  carnation    String                        // claire | medium | tan | profonde
+  fondDeTeint  String                        // F1, F2, etc.
+  antiCernes   String                        // AC1, AC2, etc.
+
+  // Consentements
+  newsletter   Boolean  @default(false)
+  cgvAccepted  Boolean  @default(true)
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}

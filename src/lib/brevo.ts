@@ -80,3 +80,134 @@ export async function addContactToWaitlist(
     return { success: false, error: "Impossible de contacter le service d'e-mail" };
   }
 }
+
+// ── Emails transactionnels (Commande) ─────────────────────────
+
+/**
+ * Données de la commande passées aux templates Brevo.
+ * Les noms des paramètres correspondent aux variables du template Brevo.
+ */
+interface OrderEmailParams {
+  orderNumber: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  city: string;
+  postalCode?: string;
+  message?: string;
+  carnationLabel: string;
+  fondDeTeintLabel: string;
+  antiCernesLabel: string;
+}
+
+/**
+ * Envoie un email transactionnel via un template Brevo.
+ * Mode dégradé silencieux si l'API key ou le template ID n'est pas configuré.
+ */
+async function sendBrevoTransactionalEmail(
+  to: { email: string; name?: string },
+  templateId: number,
+  params: Record<string, string>
+): Promise<BrevoResponse> {
+  const apiKey = process.env.BREVO_API_KEY;
+
+  if (!apiKey) {
+    console.warn("[Brevo] API key not configured — skipping transactional email");
+    return { success: true };
+  }
+
+  if (!Number.isFinite(templateId) || templateId <= 0) {
+    console.warn("[Brevo] Invalid template ID — skipping transactional email");
+    return { success: true };
+  }
+
+  try {
+    const response = await fetch(`${BREVO_API_URL}/smtp/email`, {
+      method: "POST",
+      headers: {
+        "accept": "application/json",
+        "content-type": "application/json",
+        "api-key": apiKey,
+      },
+      body: JSON.stringify({
+        to: [to],
+        templateId,
+        params,
+      }),
+    });
+
+    if (response.status === 201 || response.status === 200) {
+      return { success: true };
+    }
+
+    const errorText = await response.text();
+    console.error(`[Brevo] Transactional email error ${response.status}:`, errorText);
+    return { success: false, error: "Erreur lors de l'envoi de l'email" };
+  } catch (error) {
+    console.error("[Brevo] Network error (transactional):", error);
+    return { success: false, error: "Impossible de contacter le service d'e-mail" };
+  }
+}
+
+/**
+ * Envoie l'email de confirmation de commande à la cliente.
+ * Template Brevo personnalisable depuis le dashboard — variables :
+ * PRENOM, NOM, NUMERO_COMMANDE, CARNATION, FOND_DE_TEINT, ANTI_CERNES
+ */
+export async function sendOrderConfirmationEmail(
+  order: OrderEmailParams
+): Promise<BrevoResponse> {
+  const templateIdStr = process.env.BREVO_ORDER_CONFIRMATION_TEMPLATE_ID;
+  const templateId = templateIdStr ? Number.parseInt(templateIdStr, 10) : 0;
+
+  return sendBrevoTransactionalEmail(
+    { email: order.email, name: `${order.firstName} ${order.lastName}` },
+    templateId,
+    {
+      PRENOM: order.firstName,
+      NOM: order.lastName,
+      NUMERO_COMMANDE: order.orderNumber,
+      CARNATION: order.carnationLabel,
+      FOND_DE_TEINT: order.fondDeTeintLabel,
+      ANTI_CERNES: order.antiCernesLabel,
+    }
+  );
+}
+
+/**
+ * Envoie un email d'alerte à Yvana pour chaque nouvelle commande.
+ * Template Brevo personnalisable — variables :
+ * PRENOM, NOM, EMAIL, TELEPHONE, VILLE, CODE_POSTAL, MESSAGE,
+ * NUMERO_COMMANDE, CARNATION, FOND_DE_TEINT, ANTI_CERNES
+ */
+export async function sendOrderAlertToAdmin(
+  order: OrderEmailParams
+): Promise<BrevoResponse> {
+  const adminEmail = process.env.ADMIN_EMAIL;
+  if (!adminEmail) {
+    console.warn("[Brevo] ADMIN_EMAIL not configured — skipping admin alert");
+    return { success: true };
+  }
+
+  const templateIdStr = process.env.BREVO_ORDER_ALERT_TEMPLATE_ID;
+  const templateId = templateIdStr ? Number.parseInt(templateIdStr, 10) : 0;
+
+  return sendBrevoTransactionalEmail(
+    { email: adminEmail, name: "Yvana — TON GLOW" },
+    templateId,
+    {
+      PRENOM: order.firstName,
+      NOM: order.lastName,
+      EMAIL: order.email,
+      TELEPHONE: order.phone,
+      VILLE: order.city,
+      CODE_POSTAL: order.postalCode || "",
+      MESSAGE: order.message || "—",
+      NUMERO_COMMANDE: order.orderNumber,
+      CARNATION: order.carnationLabel,
+      FOND_DE_TEINT: order.fondDeTeintLabel,
+      ANTI_CERNES: order.antiCernesLabel,
+    }
+  );
+}
