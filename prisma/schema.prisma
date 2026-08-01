@@ -54,6 +54,11 @@ model Order {
   paymentMethod   String?                    // "especes", "virement", "paypal"
   paymentAmount   Float?
 
+  // Champs activation QR Code (Étape 4)
+  activationToken String?  @unique   // Token secret 32 hex, généré à la remise
+  activationCode  String?  @unique   // Code court lisible ex: TG-4K9P
+  activatedAt     DateTime?          // Date du premier scan (Étape 5)
+
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }

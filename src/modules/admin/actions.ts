@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/db";
 import { signJwt, verifyJwt } from "@/lib/auth";
+import { generateActivationToken, generateActivationCode } from "@/lib/tokens";
 import type { ActionState } from "./types";
 import { revalidatePath } from "next/cache";
 
@@ -171,12 +172,20 @@ export async function savePaymentDetails(
     }
 
     if (!prisma) throw new Error("No DB");
+
+    // Vérifier si un token existe déjà (idempotent)
+    const existing = await prisma.order.findUnique({ where: { id: orderId }, select: { activationToken: true } });
+    const activationToken = existing?.activationToken ?? generateActivationToken();
+    const activationCode = existing?.activationToken ? undefined : generateActivationCode();
+
     await prisma.order.update({
       where: { id: orderId },
       data: {
         status: "REMISE",
         paymentMethod,
         paymentAmount,
+        activationToken,
+        ...(activationCode ? { activationCode } : {}),
       },
     });
     
