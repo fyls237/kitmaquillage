@@ -188,12 +188,24 @@ export function OrderCard({ order }: { order: any }) {
         </div>
       )}
 
-      {/* Etape 4 : QR Code placeholder */}
+      {/* Bouton QR Code — visible uniquement si la commande est REMISE et payée */}
       {order.status === "REMISE" && order.paymentMethod && (
         <div className="mt-4 pt-4 border-t border-border flex justify-end">
-          <button disabled className="text-sm font-medium text-text-muted bg-surface border border-border px-4 py-2 cursor-not-allowed" style={{ borderRadius: "var(--radius-button)" }}>
-            Imprimer QR Code (Étape 4)
-          </button>
+          <a
+            href={`/admin/qr/${order.id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 text-sm font-semibold bg-accent text-white px-4 py-2 hover:bg-accent-hover transition-colors"
+            style={{ borderRadius: "var(--radius-button)" }}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+              <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/>
+              <rect x="20" y="14" width="1" height="1"/><rect x="14" y="20" width="7" height="1"/>
+              <rect x="20" y="17" width="1" height="3"/>
+            </svg>
+            Imprimer QR Code
+          </a>
         </div>
       )}
     </div>
