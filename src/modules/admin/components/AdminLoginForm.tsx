@@ -33,7 +33,7 @@ export function AdminLoginForm() {
             id="email"
             name="email"
             type="email"
-            placeholder="myriam@tonglow.fr"
+            placeholder="admin@example.com"
             required
             autoComplete="email"
             className="

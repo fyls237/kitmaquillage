@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { prisma } from "../src/lib/db";
 import bcrypt from "bcryptjs";
 
@@ -6,8 +7,12 @@ async function main() {
     throw new Error("Base de données non accessible. Vérifiez DATABASE_URL.");
   }
   
-  const email = "myriam@tonglow.fr";
-  const password = "myriamtonglow"; // Mot de passe par défaut
+  const email = process.env.ADMIN_EMAIL;
+  const password = process.env.ADMIN_PASSWORD;
+  
+  if (!email || !password) {
+    throw new Error("ADMIN_EMAIL ou ADMIN_PASSWORD n'est pas défini dans le fichier .env");
+  }
   
   const hashedPassword = await bcrypt.hash(password, 12);
   
@@ -17,7 +22,8 @@ async function main() {
     create: { email, password: hashedPassword },
   });
 
-  console.log(`✅ Compte admin ${admin.email} créé/mis à jour avec le mot de passe: ${password}`);
+  console.log(`✅ Compte admin ${admin.email} créé/mis à jour`);
+  process.exit(0);
 }
 
 main()

@@ -5,6 +5,7 @@ import { updateOrderStatus, saveMeetingDetails, savePaymentDetails } from "../ac
 
 export function OrderCard({ order }: { order: any }) {
   const [isUpdating, setIsUpdating] = useState(false);
+  const [isEditingMeeting, setIsEditingMeeting] = useState(false);
   
   // Status mapping
   const statusLabels: Record<string, string> = {
@@ -35,7 +36,7 @@ export function OrderCard({ order }: { order: any }) {
       <div className="flex justify-between items-start mb-4">
         <div>
           <span className="text-accent font-bold text-lg">{order.orderNumber}</span>
-          <div className="text-text-muted text-xs mt-1">
+          <div className="text-text-muted text-xs mt-1" suppressHydrationWarning>
             {new Date(order.createdAt).toLocaleDateString("fr-FR", {
               day: "numeric", month: "long", hour: "2-digit", minute: "2-digit"
             })}
@@ -44,12 +45,29 @@ export function OrderCard({ order }: { order: any }) {
         <select
           value={order.status}
           onChange={handleStatusChange}
-          disabled={isUpdating}
-          className={`text-xs font-semibold px-2 py-1 rounded-full border outline-none cursor-pointer ${statusColors[order.status] || "bg-gray-100 text-gray-800"}`}
+          disabled={isUpdating || order.status === "REMISE" || order.status === "ANNULEE"}
+          className={`text-xs font-semibold px-2 py-1 rounded-full border outline-none ${
+            (order.status === "REMISE" || order.status === "ANNULEE") ? "cursor-not-allowed opacity-80" : "cursor-pointer"
+          } ${statusColors[order.status] || "bg-gray-100 text-gray-800"}`}
         >
-          {Object.entries(statusLabels).map(([val, label]) => (
-            <option key={val} value={val}>{label}</option>
-          ))}
+          {Object.entries(statusLabels).map(([val, label]) => {
+            const ALLOWED_TRANSITIONS: Record<string, string[]> = {
+              NOUVELLE: ["NOUVELLE", "CONTACTEE", "RDV_FIXE", "ANNULEE"],
+              CONTACTEE: ["NOUVELLE", "CONTACTEE", "RDV_FIXE", "ANNULEE"],
+              RDV_FIXE: ["CONTACTEE", "RDV_FIXE", "REMISE", "ANNULEE"],
+              REMISE: ["REMISE"],
+              ANNULEE: ["ANNULEE"],
+            };
+            
+            const allowed = ALLOWED_TRANSITIONS[order.status] || [];
+            const isDisabled = !allowed.includes(val);
+
+            return (
+              <option key={val} value={val} disabled={isDisabled}>
+                {label}
+              </option>
+            );
+          })}
         </select>
       </div>
 
@@ -84,27 +102,60 @@ export function OrderCard({ order }: { order: any }) {
         </div>
       )}
 
-      {/* Formulaire RDV si statut est RDV_FIXE et pas de date */}
-      {order.status === "RDV_FIXE" && (!order.meetingDate || !order.meetingLocation) && (
-        <form action={async (formData) => { await saveMeetingDetails(order.id, formData); }} className="mt-4 p-4 border border-border bg-bg" style={{ borderRadius: "var(--radius-card)" }}>
-          <div className="text-sm font-semibold mb-3">Fixer le rendez-vous</div>
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <input type="datetime-local" name="meetingDate" required className="p-2 border border-border bg-surface text-sm w-full outline-none focus:border-accent" />
-            <input type="text" name="meetingLocation" placeholder="Lieu (ex: Paris 1er)" required className="p-2 border border-border bg-surface text-sm w-full outline-none focus:border-accent" />
+      {/* Formulaire RDV si statut est RDV_FIXE et (pas de date OU on est en mode édition) */}
+      {order.status === "RDV_FIXE" && (!order.meetingDate || !order.meetingLocation || isEditingMeeting) && (
+        <form action={async (formData) => { 
+          await saveMeetingDetails(order.id, formData); 
+          setIsEditingMeeting(false);
+        }} className="mt-4 p-4 border border-border bg-bg" style={{ borderRadius: "var(--radius-card)" }}>
+          <div className="text-sm font-semibold mb-3">
+            {order.meetingDate ? "Modifier le rendez-vous" : "Fixer le rendez-vous"}
           </div>
-          <button type="submit" className="mt-3 w-full bg-accent text-white py-2 text-sm font-semibold hover:bg-accent-hover transition-colors">
-            Enregistrer le RDV
-          </button>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <input 
+              type="datetime-local" 
+              name="meetingDate" 
+              defaultValue={order.meetingDate ? new Date(order.meetingDate).toISOString().slice(0, 16) : ""}
+              required 
+              className="p-2 border border-border bg-surface text-sm w-full outline-none focus:border-accent" 
+            />
+            <input 
+              type="text" 
+              name="meetingLocation" 
+              defaultValue={order.meetingLocation || ""}
+              placeholder="Lieu (ex: Paris 1er)" 
+              required 
+              className="p-2 border border-border bg-surface text-sm w-full outline-none focus:border-accent" 
+            />
+          </div>
+          <div className="flex gap-2 mt-3">
+            <button type="submit" className="flex-1 bg-accent text-white py-2 text-sm font-semibold hover:bg-accent-hover transition-colors">
+              Enregistrer
+            </button>
+            {order.meetingDate && (
+              <button type="button" onClick={() => setIsEditingMeeting(false)} className="flex-1 bg-surface text-text py-2 text-sm font-semibold border border-border hover:bg-bg transition-colors">
+                Annuler
+              </button>
+            )}
+          </div>
         </form>
       )}
 
-      {/* Affichage du RDV s'il est fixé */}
-      {order.meetingDate && order.meetingLocation && order.status !== "ANNULEE" && (
+      {/* Affichage du RDV s'il est fixé et qu'on n'est pas en train de l'éditer */}
+      {order.meetingDate && order.meetingLocation && order.status !== "ANNULEE" && !isEditingMeeting && (
         <div className="mt-4 p-3 bg-bg border border-border text-sm flex flex-col sm:flex-row sm:items-center justify-between" style={{ borderRadius: "var(--radius-card)" }}>
-          <div>
+          <div suppressHydrationWarning>
             <span className="font-semibold">RDV : </span>
             {new Date(order.meetingDate).toLocaleString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })} à {order.meetingLocation}
           </div>
+          {order.status === "RDV_FIXE" && (
+            <button 
+              onClick={() => setIsEditingMeeting(true)}
+              className="mt-2 sm:mt-0 text-xs font-medium text-accent hover:underline"
+            >
+              Modifier
+            </button>
+          )}
         </div>
       )}
 
@@ -127,8 +178,8 @@ export function OrderCard({ order }: { order: any }) {
         </form>
       )}
 
-      {/* Affichage Paiement s'il est fait */}
-      {order.paymentMethod && order.paymentAmount && (
+      {/* Affichage Paiement s'il est fait et si la commande est en statut REMISE */}
+      {order.paymentMethod && order.paymentAmount && order.status === "REMISE" && (
         <div className="mt-4 p-3 bg-green-50 text-green-800 border border-green-200 text-sm flex items-center justify-between" style={{ borderRadius: "var(--radius-card)" }}>
           <div>
             <span className="font-bold">Payé : </span>

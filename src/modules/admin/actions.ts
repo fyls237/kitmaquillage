@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/db";
-import { signJwt } from "@/lib/auth";
+import { signJwt, verifyJwt } from "@/lib/auth";
 import type { ActionState } from "./types";
 import { revalidatePath } from "next/cache";
 
@@ -32,10 +32,36 @@ export async function loginAdmin(
       return { success: false, message: "Identifiants invalides." };
     }
 
-    const isValid = await bcrypt.compare(password, admin.password);
-    if (!isValid) {
-      return { success: false, message: "Identifiants invalides." };
+    const now = new Date();
+    // Vérifier si le compte est bloqué
+    if (admin.lockedUntil && admin.lockedUntil > now) {
+      const minutesLeft = Math.ceil((admin.lockedUntil.getTime() - now.getTime()) / 60000);
+      return { success: false, message: `Compte bloqué suite à plusieurs tentatives échouées. Réessayez dans ${minutesLeft} minutes.` };
     }
+
+    const isValid = await bcrypt.compare(password, admin.password);
+    
+    if (!isValid) {
+      const MAX_ATTEMPTS = 5;
+      const newAttempts = admin.failedAttempts + 1;
+      const lockedUntil = newAttempts >= MAX_ATTEMPTS ? new Date(now.getTime() + 15 * 60000) : null; // Bloqué 15 min
+
+      await prisma.adminUser.update({
+        where: { id: admin.id },
+        data: { failedAttempts: newAttempts, lockedUntil }
+      });
+
+      if (lockedUntil) {
+        return { success: false, message: `Trop de tentatives. Compte bloqué pour 15 minutes.` };
+      }
+      return { success: false, message: `Identifiants invalides. Tentative ${newAttempts}/${MAX_ATTEMPTS}.` };
+    }
+
+    // Réinitialiser les tentatives si succès
+    await prisma.adminUser.update({
+      where: { id: admin.id },
+      data: { failedAttempts: 0, lockedUntil: null }
+    });
 
     const token = await signJwt({ adminId: admin.id, email: admin.email });
     
@@ -67,6 +93,24 @@ export async function logoutAdmin() {
 export async function updateOrderStatus(orderId: string, newStatus: string) {
   try {
     if (!prisma) throw new Error("No DB");
+    
+    const currentOrder = await prisma.order.findUnique({ where: { id: orderId } });
+    if (!currentOrder) return { success: false, message: "Commande introuvable" };
+
+    // Machine à états : transitions autorisées
+    const ALLOWED_TRANSITIONS: Record<string, string[]> = {
+      NOUVELLE: ["NOUVELLE", "CONTACTEE", "RDV_FIXE", "ANNULEE"],
+      CONTACTEE: ["NOUVELLE", "CONTACTEE", "RDV_FIXE", "ANNULEE"],
+      RDV_FIXE: ["CONTACTEE", "RDV_FIXE", "REMISE", "ANNULEE"],
+      REMISE: ["REMISE"], // État terminal
+      ANNULEE: ["ANNULEE"], // État terminal
+    };
+
+    const allowed = ALLOWED_TRANSITIONS[currentOrder.status] || [];
+    if (!allowed.includes(newStatus)) {
+      return { success: false, message: "Transition de statut non autorisée (Règle métier)." };
+    }
+
     await prisma.order.update({
       where: { id: orderId },
       data: { status: newStatus },
@@ -171,6 +215,10 @@ export async function changePassword(
 
   if (newPassword.length < 8) {
     return { success: false, message: "Le nouveau mot de passe doit faire au moins 8 caractères." };
+  }
+
+  if (oldPassword === newPassword) {
+    return { success: false, message: "Le nouveau mot de passe doit être différent de l'ancien." };
   }
 
   try {
