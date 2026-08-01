@@ -15,6 +15,14 @@ model WaitlistEntry {
   createdAt DateTime @default(now())
 }
 
+model AdminUser {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String   // Hashed with bcrypt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model Order {
   id           String   @id @default(cuid())
   orderNumber  String   @unique              // Format "TG-XXXX" lisible
@@ -37,6 +45,12 @@ model Order {
   // Consentements
   newsletter   Boolean  @default(false)
   cgvAccepted  Boolean  @default(true)
+
+  // Champs de gestion back-office (Étape 3)
+  meetingDate     DateTime?
+  meetingLocation String?
+  paymentMethod   String?                    // "especes", "virement", "paypal"
+  paymentAmount   Float?
 
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
