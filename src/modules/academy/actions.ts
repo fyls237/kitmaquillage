@@ -30,7 +30,7 @@ export async function activateAccount(
   // Valider les données
   const parsed = ActivateSchema.safeParse(data);
   if (!parsed.success) {
-    return { success: false, message: parsed.error.errors[0].message };
+    return { success: false, message: parsed.error.issues[0].message };
   }
 
   const { firstName, email, password, token } = parsed.data;
